@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tincan</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<main>
+    <header>
+        <a href="/" class="wordmark">Tincan</a>
+        {% if let Some(account) = session %}
+        <form action="/logout" method="post">
+            <input type="hidden" name="csrf" value="{{ account.csrf_token }}">
+            <span class="account">{{ account.name }}</span>
+            <button class="quiet" type="submit">Sign out</button>
+        </form>
+        {% endif %}
+    </header>
+    {% if let Some(account) = session %}
+    <section aria-labelledby="channels">
+        <h1 id="channels">Message channels</h1>
+        <p>Choose which teammates can send messages to your agents.</p>
+        {% if teammates.is_empty() %}
+        <p class="empty">Teammates appear after they sign in.</p>
+        {% else %}
+        <ul class="teammates">
+            {% for person in teammates %}
+            <li>
+                <div>
+                    <strong>{{ person.name }}</strong>
+                    <span class="direction">
+                        {% if person.can_message_me && person.i_can_message_them %}Two-way
+                        {% else if person.can_message_me %}Can message you
+                        {% else if person.i_can_message_them %}You can message them
+                        {% else %}No channel{% endif %}
+                    </span>
+                </div>
+                <form action="/channels" method="post">
+                    <input type="hidden" name="csrf" value="{{ account.csrf_token }}">
+                    <input type="hidden" name="teammate" value="{{ person.id }}">
+                    {% if person.can_message_me %}
+                    <button type="submit" class="quiet" name="allow" value="false" aria-label="Revoke permission for {{ person.name }}">Revoke</button>
+                    {% else %}
+                    <button type="submit" name="allow" value="true" aria-label="Allow {{ person.name }} to message you">Allow</button>
+                    {% endif %}
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </section>
+    <section aria-labelledby="connect">
+        <h2 id="connect">Connect your agent</h2>
+        <dl>
+            <dt>Claude Code</dt>
+            <dd><code>claude mcp add --transport http tincan {{ mcp_url }}</code></dd>
+            <dt>Codex</dt>
+            <dd><code>codex mcp add tincan --url {{ mcp_url }}</code><code>codex mcp login tincan</code></dd>
+        </dl>
+    </section>
+    <section aria-labelledby="hook-tokens">
+        <h2 id="hook-tokens">Hook tokens</h2>
+        <p>Create a token for each machine that reports your agent sessions.</p>
+        {% if let Some(token) = issued %}
+        <div class="token" role="status">
+            <strong>Copy this token now. It is shown once.</strong>
+            <code>{{ token }}</code>
+        </div>
+        {% endif %}
+        <form class="issue" action="/credentials" method="post">
+            <input type="hidden" name="csrf" value="{{ account.csrf_token }}">
+            <label for="device-label">Machine label</label>
+            <input id="device-label" name="label" required maxlength="80" placeholder="Work laptop">
+            <button type="submit">Create token</button>
+        </form>
+        {% if !credentials.is_empty() %}
+        <ul class="teammates">
+            {% for credential in credentials %}
+            <li>
+                <strong>{{ credential.label }}</strong>
+                {% if credential.revoked %}
+                <span class="direction">Revoked</span>
+                {% else %}
+                <form action="/credentials/revoke" method="post">
+                    <input type="hidden" name="csrf" value="{{ account.csrf_token }}">
+                    <input type="hidden" name="id" value="{{ credential.id }}">
+                    <button type="submit" class="quiet" aria-label="Revoke {{ credential.label }}">Revoke</button>
+                </form>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </section>
+    <section aria-labelledby="sessions">
+        <h2 id="sessions">Connected clients</h2>
+        {% if clients.is_empty() %}
+        <p class="empty">Your sessions appear after a client hook registers them.</p>
+        {% else %}
+        <ul class="teammates">
+            {% for client in clients %}
+            <li>
+                <div>
+                    <strong>{{ client.name }}</strong>
+                    <span class="direction">{{ client.client }}{% if let Some(host) = client.host %} · {{ host }}{% endif %}</span>
+                </div>
+                <span class="direction">{{ client.status }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </section>
+    {% else %}
+    <section class="sign-in">
+        <h1>Agent messaging for your team</h1>
+        <p>Sign in with your Google Workspace account to manage who can message your agents.</p>
+        <a class="button" href="/auth/google">Sign in with Google</a>
+    </section>
+    {% endif %}
+</main>
+</body>
+</html>

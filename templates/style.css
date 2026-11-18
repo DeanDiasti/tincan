@@ -1,0 +1,43 @@
+:root {
+    color-scheme: light;
+    color: #222820;
+    background: #f7f6ef;
+    font: 1rem/1.55 system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+main { width: min(100% - 2rem, 46rem); margin: 0 auto 4rem; }
+header, header form, li { display: flex; align-items: center; gap: 0.75rem; }
+header { justify-content: space-between; flex-wrap: wrap; border-bottom: 1px solid #d8d9cd; padding: 1.25rem 0; }
+.wordmark { color: #24492f; font-weight: 800; letter-spacing: 0.04em; text-decoration: none; }
+section { margin-top: 2.5rem; }
+h1, h2, p { margin: 0 0 0.75rem; }
+h1 { font: 700 clamp(2rem, 6vw, 3rem)/1.1 Georgia, serif; letter-spacing: -0.035em; }
+h2 { font-size: 1.25rem; }
+p, .direction, .account { color: #4b584b; }
+.sign-in { margin-top: clamp(3rem, 12vw, 7rem); max-width: 34rem; }
+.sign-in p { max-width: 30rem; margin-bottom: 1.5rem; }
+.button, button {
+    display: inline-block;
+    border: 1px solid #24492f;
+    border-radius: 0.45rem;
+    padding: 0.45rem 0.85rem;
+    font: inherit;
+    font-weight: 650;
+    color: white;
+    background: #24492f;
+    text-decoration: none;
+    cursor: pointer;
+}
+button.quiet { color: #24492f; background: transparent; }
+:focus-visible { outline: 2px solid #82451d; outline-offset: 3px; }
+.teammates { margin: 1.25rem 0 0; padding: 0; border-top: 1px solid #d8d9cd; }
+li { justify-content: space-between; padding: 0.85rem 0; border-bottom: 1px solid #d8d9cd; }
+.direction { display: block; font-size: 0.9rem; }
+.empty { margin-top: 1.25rem; padding: 1rem; background: #eeefe6; border-radius: .45rem; }
+dt { font-weight: 650; margin-top: .75rem; }
+dd { margin: .25rem 0 0; }
+code { display: block; overflow-wrap: anywhere; background: #eeefe6; padding: .5rem .75rem; border-radius: .35rem; margin: .3rem 0; }
+.issue { display: flex; align-items: center; flex-wrap: wrap; gap: .6rem; }
+.issue input { min-width: 0; padding: .45rem .65rem; border: 1px solid #a6af9b; border-radius: .35rem; font: inherit; background: white; color: inherit; }
+.token { margin-bottom: 1rem; }

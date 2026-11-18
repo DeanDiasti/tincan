@@ -1,0 +1,5 @@
+{
+  "name": "tincan",
+  "description": "Register agent sessions and check private Tincan mail at natural pauses",
+  "version": "0.1.0"
+}

@@ -1,0 +1,9 @@
+**
+!Cargo.toml
+!Cargo.lock
+!src/
+!src/**
+!migrations/
+!migrations/**
+!templates/
+!templates/**
