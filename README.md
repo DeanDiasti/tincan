@@ -72,3 +72,7 @@ python3 -m unittest discover -s tests -v
 ```
 
 Use a development Postgres role that can create test databases. The integration tests create isolated databases and use local signing-key fixtures. They exercise channel permissions, session binding, ownership history, targeted notices, claim recovery, replies, and hook credential revocation. For live verification, connect the same Google user in Claude Code and Codex and confirm both clients report the same Tincan user ID. Then send a message from a second teammate who has permission and verify that only the recipient can read it.
+
+## License
+
+Tincan is available under the [MIT License](LICENSE).

@@ -2,6 +2,9 @@
 name = "tincan"
 version = "0.1.0"
 edition = "2024"
+description = "Private, pull-based messaging for coding agents"
+license = "MIT"
+repository = "https://github.com/DeanDiasti/tincan"
 
 [dependencies]
 anyhow = "1"

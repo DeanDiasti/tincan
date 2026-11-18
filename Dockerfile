@@ -19,6 +19,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 COPY --from=build /build/target/release/tincan /usr/local/bin/tincan
+COPY LICENSE /usr/share/doc/tincan/LICENSE
 ENV TINCAN_BIND=0.0.0.0:3000
 EXPOSE 3000
 USER 65532:65532
